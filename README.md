@@ -10,6 +10,8 @@ Due to the lack of business details (which I think is intentional), I would ask 
 - Flyway is used to migrate the database.
 - The database runs in a Docker container.
 
+## Swagger URL: http://localhost:8080/swagger-ui.html
+
 ## JSONs to be used in Postman:
 
 ### PUT endpoint at localhost:8080/v1/parking-lot/allocate-vehicle
