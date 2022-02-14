@@ -1,7 +1,14 @@
 package com.example.parkinglotapi.utils;
 
 import com.example.parkinglotapi.dto.ParkingRegistryDto;
+import com.example.parkinglotapi.enums.ParkingSpotType;
+import com.example.parkinglotapi.model.Floor;
 import com.example.parkinglotapi.model.ParkingRegistry;
+import com.example.parkinglotapi.model.ParkingSpot;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ParkingLotUtils {
 
@@ -13,6 +20,31 @@ public class ParkingLotUtils {
                 .parkingSpotId(entity.getParkingSpotId())
                 .pricePerMinute(entity.getPricePerMinute())
                 .build();
+    }
+
+    public static ParkingRegistry buildParkingRegistry(ParkingSpot parkingSpot, Floor floor) {
+        return ParkingRegistry.builder()
+                .initialTime(getFormattedInitialTime())
+                .floorName(floor.getName())
+                .parkingSpotId(parkingSpot.getId())
+                .pricePerMinute(getPricePerMinute(parkingSpot.getType()))
+                .build();
+    }
+
+    public static String getFormattedInitialTime() {
+        var formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:s");
+        return LocalDateTime.now().format(formatter);
+    }
+
+    public static BigDecimal getPricePerMinute(ParkingSpotType parkingSpotType) {
+        switch (parkingSpotType) {
+            case SMALL:
+                return new BigDecimal("1.00");
+            case MEDIUM:
+                return new BigDecimal("2.00");
+            default:
+                return new BigDecimal("3.00");
+        }
     }
 
 }

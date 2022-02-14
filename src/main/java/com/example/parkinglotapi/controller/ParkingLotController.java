@@ -3,6 +3,8 @@ package com.example.parkinglotapi.controller;
 import com.example.parkinglotapi.dto.ParkingRegistryDto;
 import com.example.parkinglotapi.dto.VehicleDataDto;
 import com.example.parkinglotapi.exception.NoSpotException;
+import com.example.parkinglotapi.exception.VehicleTooTallException;
+import com.example.parkinglotapi.exception.WeightCapacityException;
 import com.example.parkinglotapi.service.ParkingLotService;
 import com.example.parkinglotapi.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,8 @@ public class ParkingLotController {
     private PaymentService paymentService;
 
     @PutMapping("/allocate-vehicle")
-    public ResponseEntity<ParkingRegistryDto> allocateVehicle(@RequestBody VehicleDataDto vehicleDataDto) throws NoSpotException {
+    public ResponseEntity<ParkingRegistryDto> allocateVehicle(@RequestBody VehicleDataDto vehicleDataDto)
+            throws NoSpotException, VehicleTooTallException, WeightCapacityException {
         return new ResponseEntity<>(parkingLotService.allocateVehicle(vehicleDataDto), HttpStatus.OK);
     }
 

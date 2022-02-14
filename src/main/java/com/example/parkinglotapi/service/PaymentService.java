@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Service
 public class PaymentService {
 
-    // This class is just and emulation
+    // This class is just an emulation
 
     public BigDecimal payment(ParkingRegistryDto parkingRegistryDto) {
 
