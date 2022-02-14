@@ -2,7 +2,6 @@ package com.example.parkinglotapi.utils;
 
 import com.example.parkinglotapi.dto.ParkingRegistryDto;
 import com.example.parkinglotapi.enums.ParkingSpotType;
-import com.example.parkinglotapi.model.Floor;
 import com.example.parkinglotapi.model.ParkingRegistry;
 import com.example.parkinglotapi.model.ParkingSpot;
 
@@ -22,10 +21,10 @@ public class ParkingLotUtils {
                 .build();
     }
 
-    public static ParkingRegistry buildParkingRegistry(ParkingSpot parkingSpot, Floor floor) {
+    public static ParkingRegistry buildParkingRegistry(ParkingSpot parkingSpot, String floorName) {
         return ParkingRegistry.builder()
                 .initialTime(getFormattedInitialTime())
-                .floorName(floor.getName())
+                .floorName(floorName)
                 .parkingSpotId(parkingSpot.getId())
                 .pricePerMinute(getPricePerMinute(parkingSpot.getType()))
                 .build();

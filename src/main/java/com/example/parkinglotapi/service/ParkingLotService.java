@@ -32,7 +32,7 @@ public class ParkingLotService {
 
         var parkingSpot = parkingSpotService.getParkingSpot(floor.getId(), vehicleWeight);
 
-        return parkingRegistryService.createParkingRegistry(parkingSpot, floor);
+        return parkingRegistryService.createParkingRegistry(parkingSpot, floor.getName());
 
     }
 

@@ -48,7 +48,7 @@ class ParkingLotServiceTest {
         when(parkingSpotService.getParkingSpot(anyLong(), any()))
                 .thenReturn(parkingSpot);
 
-        when(parkingRegistryService.createParkingRegistry(parkingSpot, floor))
+        when(parkingRegistryService.createParkingRegistry(parkingSpot, floor.getName()))
                 .thenReturn(response);
 
         var parkingLotRegistry = parkingLotService.allocateVehicle(VehicleDataDtoHelper.getVehicleDataDto());

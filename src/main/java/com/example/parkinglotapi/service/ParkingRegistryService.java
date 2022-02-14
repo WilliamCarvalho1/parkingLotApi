@@ -1,7 +1,6 @@
 package com.example.parkinglotapi.service;
 
 import com.example.parkinglotapi.dto.ParkingRegistryDto;
-import com.example.parkinglotapi.model.Floor;
 import com.example.parkinglotapi.model.ParkingSpot;
 import com.example.parkinglotapi.repository.ParkingRegistryRepository;
 import com.example.parkinglotapi.utils.ParkingLotUtils;
@@ -14,9 +13,9 @@ public class ParkingRegistryService {
     @Autowired
     private ParkingRegistryRepository parkingRegistryRepository;
 
-    public ParkingRegistryDto createParkingRegistry(ParkingSpot parkingSpot, Floor floor) {
+    public ParkingRegistryDto createParkingRegistry(ParkingSpot parkingSpot, String floorName) {
 
-        var parkingRegistry = ParkingLotUtils.buildParkingRegistry(parkingSpot, floor);
+        var parkingRegistry = ParkingLotUtils.buildParkingRegistry(parkingSpot, floorName);
 
         parkingRegistryRepository.save(parkingRegistry);
 
