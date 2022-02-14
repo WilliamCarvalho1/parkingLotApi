@@ -2,81 +2,38 @@ package com.example.parkinglotapi.service;
 
 import com.example.parkinglotapi.dto.ParkingRegistryDto;
 import com.example.parkinglotapi.dto.VehicleDataDto;
-import com.example.parkinglotapi.enums.ParkingSpotType;
 import com.example.parkinglotapi.exception.NoSpotException;
-import com.example.parkinglotapi.model.ParkingRegistry;
-import com.example.parkinglotapi.repository.FloorRepository;
-import com.example.parkinglotapi.repository.ParkingRegistryRepository;
-import com.example.parkinglotapi.repository.ParkingSpotRepository;
-import com.example.parkinglotapi.utils.ParkingLotUtils;
+import com.example.parkinglotapi.exception.VehicleTooTallException;
+import com.example.parkinglotapi.exception.WeightCapacityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class ParkingLotService {
 
     @Autowired
-    private ParkingSpotRepository parkingSpotRepository;
+    private ParkingRegistryService parkingRegistryService;
 
     @Autowired
-    private ParkingRegistryRepository parkingRegistryRepository;
+    private ParkingSpotService parkingSpotService;
 
     @Autowired
-    private FloorRepository floorRepository;
+    private FloorService floorService;
 
     @Transactional
-    public ParkingRegistryDto allocateVehicle(VehicleDataDto vehicleDataDto) throws NoSpotException {
+    public ParkingRegistryDto allocateVehicle(VehicleDataDto vehicleDataDto) throws NoSpotException,
+            VehicleTooTallException, WeightCapacityException {
 
         var vehicleHeight = vehicleDataDto.getHeight();
         var vehicleWeight = vehicleDataDto.getWeight();
 
-        var parkingSpot = parkingSpotRepository.getAvailableParkingSpot(vehicleHeight, vehicleWeight);
+        var floor = floorService.getSuitableFloor(vehicleHeight, vehicleWeight);
 
-        if (parkingSpot != null) {
+        var parkingSpot = parkingSpotService.getParkingSpot(floor.getId(), vehicleWeight);
 
-            var parkingSpotId = parkingSpot.getId();
-            var floorId = parkingSpot.getFloorId();
+        return parkingRegistryService.createParkingRegistry(parkingSpot, floor);
 
-            parkingSpotRepository.setParkingSpotToOccupied(parkingSpotId);
-            floorRepository.updateFloorWeightCapacity(vehicleWeight, floorId);
-
-            var floor = floorRepository.findById(floorId);
-
-            var pricePerMinute = getPricePerMinute(parkingSpot.getType());
-
-            var formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd h:m:s");
-            var initialTime = LocalDateTime.now().format(formatter);
-
-            var parkingRegistry = ParkingRegistry.builder()
-                    .initialTime(initialTime)
-                    .floorName(floor.getName())
-                    .parkingSpotId(parkingSpotId)
-                    .pricePerMinute(pricePerMinute)
-                    .build();
-
-            parkingRegistryRepository.save(parkingRegistry);
-
-            return ParkingLotUtils.convertToDto(parkingRegistry);
-        } else {
-            throw new NoSpotException();
-        }
-
-    }
-
-    public BigDecimal getPricePerMinute(ParkingSpotType parkingSpotType) {
-        switch (parkingSpotType) {
-            case SMALL:
-                return new BigDecimal("1.00");
-            case MEDIUM:
-                return new BigDecimal("2.00");
-            default:
-                return new BigDecimal("3.00");
-        }
     }
 
 }
