@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +23,22 @@ public class FloorService {
 
         var floors = floorRepository.findAll();
 
+        floors = getFloorsTallerThanVehicle(vehicleHeight, floors);
+
+        floors.sort(Comparator.comparing(Floor::getCeilingHeight));
+
+        return getAvailableFloor(vehicleWeight, floors);
+
+    }
+
+    private Floor getAvailableFloor(BigDecimal vehicleWeight, List<Floor> floors) throws WeightCapacityException {
+        return floors.stream()
+                .filter(f -> f.getCurrentWeightCapacity().compareTo(vehicleWeight) >= 0)
+                .findFirst()
+                .orElseThrow(WeightCapacityException::new);
+    }
+
+    private List<Floor> getFloorsTallerThanVehicle(BigDecimal vehicleHeight, List<Floor> floors) throws VehicleTooTallException {
         floors = floors.stream()
                 .filter(f -> f.getCeilingHeight().compareTo(vehicleHeight) >= 0)
                 .collect(Collectors.toList());
@@ -30,13 +47,7 @@ public class FloorService {
             throw new VehicleTooTallException();
         }
 
-        floors.sort(Comparator.comparing(Floor::getCeilingHeight));
-
-        return floors.stream()
-                .filter(f -> f.getCurrentWeightCapacity().compareTo(vehicleWeight) >= 0)
-                .findFirst()
-                .orElseThrow(WeightCapacityException::new);
-
+        return floors;
     }
 
     public void updateFloorWeightCapacity(BigDecimal vehicleWeight, Long floorId) {
