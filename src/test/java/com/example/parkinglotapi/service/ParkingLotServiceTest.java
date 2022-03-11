@@ -7,6 +7,7 @@ import com.example.parkinglotapi.helper.FloorHelper;
 import com.example.parkinglotapi.helper.ParkingRegistryDtoHelper;
 import com.example.parkinglotapi.helper.ParkingSpotHelper;
 import com.example.parkinglotapi.helper.VehicleDataDtoHelper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,6 +35,7 @@ class ParkingLotServiceTest {
     private ParkingRegistryService parkingRegistryService;
 
     @Test
+    @DisplayName("Should allocate vehicle")
     void shouldAllocateVehicle() throws WeightCapacityException, VehicleTooTallException, NoSpotException {
 
         var response = ParkingRegistryDtoHelper.getParkingRegistryDto();

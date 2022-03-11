@@ -4,6 +4,7 @@ import com.example.parkinglotapi.helper.FloorHelper;
 import com.example.parkinglotapi.helper.ParkingRegistryDtoHelper;
 import com.example.parkinglotapi.helper.ParkingSpotHelper;
 import com.example.parkinglotapi.repository.ParkingRegistryRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +23,7 @@ class ParkingRegistryServiceTest {
     private ParkingRegistryRepository parkingRegistryRepository;
 
     @Test
+    @DisplayName("Should create parking registry")
     public void shouldCreateParkingRegistry() {
 
         var expectedParkingRegistryDto = ParkingRegistryDtoHelper.getParkingRegistryDto();

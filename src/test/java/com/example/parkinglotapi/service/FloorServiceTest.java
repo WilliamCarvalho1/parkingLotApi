@@ -4,6 +4,7 @@ import com.example.parkinglotapi.exception.VehicleTooTallException;
 import com.example.parkinglotapi.exception.WeightCapacityException;
 import com.example.parkinglotapi.helper.FloorHelper;
 import com.example.parkinglotapi.repository.FloorRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,7 @@ class FloorServiceTest {
     FloorRepository floorRepository;
 
     @Test
+    @DisplayName("Should get suitable Floor")
     public void shouldGetSuitableFloor() throws VehicleTooTallException, WeightCapacityException {
 
         var expectedFloor = FloorHelper.getFloor();
@@ -41,6 +43,7 @@ class FloorServiceTest {
     }
 
     @Test
+    @DisplayName("Should throw VehicleTooTallException")
     public void shouldThrowVehicleTooTallException() {
 
         assertThrows(VehicleTooTallException.class, () -> {
@@ -54,6 +57,7 @@ class FloorServiceTest {
     }
 
     @Test
+    @DisplayName("Should throw WeightCapacityException")
     public void shouldThrowWeightCapacityException() {
 
         assertThrows(WeightCapacityException.class, () -> {

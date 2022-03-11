@@ -3,6 +3,7 @@ package com.example.parkinglotapi.service;
 import com.example.parkinglotapi.exception.NoSpotException;
 import com.example.parkinglotapi.helper.ParkingSpotHelper;
 import com.example.parkinglotapi.repository.ParkingSpotRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,7 @@ class ParkingSpotServiceTest {
     ParkingSpotRepository parkingSpotRepository;
 
     @Test
+    @DisplayName("Should get parking spot")
     public void shouldGetParkingSpot() throws NoSpotException {
 
         var expectedParkingSpot = ParkingSpotHelper.getParkingSpot();
